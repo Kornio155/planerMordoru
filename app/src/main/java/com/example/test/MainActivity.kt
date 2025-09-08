@@ -1,15 +1,21 @@
 package com.example.test
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TimePicker
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         "Krasnolud" to R.drawable.axe
     )
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -60,6 +67,24 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 imageView.setImageResource(0)
             }
+
+        }
+        //datapicker
+
+        val dataSpinner: DatePicker = findViewById(R.id.date)
+        dataSpinner.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
+            val selectedDate = "$dayOfMonth/${monthOfYear+1}/$year"
+            Log.d("MainActivity", "$selectedDate")
+        }
+
+        //timepicker
+
+        val czas = findViewById<TimePicker>(R.id.time)
+        czas.setIs24HourView(true)
+
+        czas.setOnTimeChangedListener { view, hour, minute ->
+        val selectedTime = "$hour:$minute"
+            Log.d("MainActivity", "$selectedTime")
         }
     }
 }
