@@ -5,7 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wyprawa do Mordoeu"
+            android:text="Wyprawa do Mordoru"
             android:textAlignment="center"/>
     </LinearLayout>
     <LinearLayout
@@ -23,10 +25,54 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Twoje imię to: "/>
+
+        <EditText
+            android:layout_width="100dp"
             android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jakiej jesteś rasy?"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rasa"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/zdj"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wybierz date"/>
+
+        <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:datePickerMode="spinner"
+            android:id="@+id/spinner"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>
