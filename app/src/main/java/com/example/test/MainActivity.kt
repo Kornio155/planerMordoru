@@ -101,18 +101,20 @@ class MainActivity : AppCompatActivity() {
 
         //wyposazenie czyli obsluga switch
         val sciezki: Switch = findViewById(R.id.sciezki)
+        sciezki.setOnClickListener {
+            val czySciezki = sciezki.isChecked
+            Log.d("cos", "$czySciezki")
+        }
 
-        val czySciezki = sciezki.isChecked
-        Log.d("cos", "$czySciezki")
 
         //wyposazenie czyli checkboxy
-        val plElfow: CheckBox = findViewById(R.id.plElfow)
-        val lembasy: CheckBox = findViewById(R.id.lembasy)
-        val pochodnia: CheckBox = findViewById(R.id.pochodnia)
+        val plElfowcb: CheckBox = findViewById(R.id.plElfow)
+        val lembasycb: CheckBox = findViewById(R.id.lembasy)
+        val pochodniacb: CheckBox = findViewById(R.id.pochodnia)
 
+        val plElfow = plElfowcb.isChecked
+        val lembasy = lembasycb.isChecked
+        val pochodnia = pochodniacb.isChecked
 
     }
-
-
-
 }
