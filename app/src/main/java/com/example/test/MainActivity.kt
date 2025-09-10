@@ -2,17 +2,24 @@ package com.example.test
 
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.os.IResultReceiver
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.DatePicker
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     var selectedDate: String = ""
     var selectedTime: String = ""
+    var selectedRadio: String = ""
+    var podroz: Int = 0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -97,7 +106,15 @@ class MainActivity : AppCompatActivity() {
 
         //tu jest wypisanie kiedy i o ktorej podroz sie zaczyna
         val kiedy: TextView = findViewById(R.id.kiedy)
-        kiedy.text = "Wyruszasz $selectedDate o godzinie $selectedTime."
+        dataSpinner.setOnDateChangedListener { _, year,  monthOfYear, dayOfMonth ->
+            selectedDate = "$dayOfMonth/${monthOfYear+1}/$year"
+            kiedy.text = "Wyruszasz $selectedDate o godzinie $selectedTime."
+        }
+
+        czas.setOnTimeChangedListener { _, hour, minute ->
+            selectedTime = "$hour:$minute"
+            kiedy.text = "Wyruszasz $selectedDate o godzinie $selectedTime."
+        }
 
         //wyposazenie czyli obsluga switch
         val sciezki: Switch = findViewById(R.id.sciezki)
@@ -112,9 +129,66 @@ class MainActivity : AppCompatActivity() {
         val lembasycb: CheckBox = findViewById(R.id.lembasy)
         val pochodniacb: CheckBox = findViewById(R.id.pochodnia)
 
-        val plElfow = plElfowcb.isChecked
-        val lembasy = lembasycb.isChecked
-        val pochodnia = pochodniacb.isChecked
+        //priorytet
+        val radioGrupa: RadioGroup = findViewById(R.id.priorytet)
+        val wybraneId = radioGrupa.checkedRadioButtonId
 
+        if(wybraneId != -1){
+            val wybraneRadio: RadioButton = findViewById(wybraneId)
+            selectedRadio = wybraneRadio.text.toString()
+        }
+
+        //seekbar
+        val minuty: SeekBar = findViewById(R.id.czasMarszu)
+        val wysminuty: TextView = findViewById(R.id.minuty)
+        minuty.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar, progres: Int, fromUser: Boolean) {
+                podroz = progres
+                wysminuty.text = "Marsz będzie trwał $progres minut."
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+        })
+
+        //tu jest podsumowanie, nic dalej ma nie byc!!!!!!!
+
+        val podsumowanie: TextView = findViewById(R.id.podsumowanie)
+        val guzik: Button = findViewById(R.id.guziczek)
+        val imie: EditText = findViewById(R.id.imie)
+
+        guzik.setOnClickListener {
+            val rasa = spinner.selectedItem.toString()
+            val sciezki = if(sciezki.isChecked) "tak" else "nie"
+            val wybraneId = radioGrupa.checkedRadioButtonId
+
+            if (wybraneId == -1) {
+
+                Toast.makeText(this, "Musisz wybrać intensywność marszu, zanim przejdziesz dalej!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val wyposazenie = mutableListOf<String>()
+            if (plElfowcb.isChecked) wyposazenie.add("Płaszcz elfów")
+            if (lembasycb.isChecked) wyposazenie.add("Lembasy")
+            if (pochodniacb.isChecked) wyposazenie.add("Pochodnia")
+
+            val podsumowanieText = """
+                Imie: ${imie.text}
+                Rasa: $rasa
+                Wychodzisz $selectedDate o godzinie $selectedTime
+                Czy chcesz dostęp do tajnych ścieżek? $sciezki
+                Wyposażenie: ${if (wyposazenie.isEmpty()) "brak" else wyposazenie.joinToString(", ")}
+                Marsz będzie: $selectedRadio
+                Marsz będzie trwał: $podroz""".trimIndent()
+
+
+            podsumowanie.text = podsumowanieText
+        }
     }
 }
