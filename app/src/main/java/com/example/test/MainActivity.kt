@@ -6,15 +6,19 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Switch
+import android.widget.TextView
 import android.widget.TimePicker
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         "Czarodziej" to R.drawable.wand,
         "Krasnolud" to R.drawable.axe
     )
+
+    var selectedDate: String = ""
+    var selectedTime: String = ""
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         val dataSpinner: DatePicker = findViewById(R.id.date)
         dataSpinner.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
-            val selectedDate = "$dayOfMonth/${monthOfYear+1}/$year"
+            selectedDate = "$dayOfMonth/${monthOfYear+1}/$year"
             Log.d("MainActivity", "$selectedDate")
         }
 
@@ -83,8 +91,28 @@ class MainActivity : AppCompatActivity() {
         czas.setIs24HourView(true)
 
         czas.setOnTimeChangedListener { view, hour, minute ->
-        val selectedTime = "$hour:$minute"
+        selectedTime = "$hour:$minute"
             Log.d("MainActivity", "$selectedTime")
         }
+
+        //tu jest wypisanie kiedy i o ktorej podroz sie zaczyna
+        val kiedy: TextView = findViewById(R.id.kiedy)
+        kiedy.text = "Wyruszasz $selectedDate o godzinie $selectedTime."
+
+        //wyposazenie czyli obsluga switch
+        val sciezki: Switch = findViewById(R.id.sciezki)
+
+        val czySciezki = sciezki.isChecked
+        Log.d("cos", "$czySciezki")
+
+        //wyposazenie czyli checkboxy
+        val plElfow: CheckBox = findViewById(R.id.plElfow)
+        val lembasy: CheckBox = findViewById(R.id.lembasy)
+        val pochodnia: CheckBox = findViewById(R.id.pochodnia)
+
+
     }
+
+
+
 }
